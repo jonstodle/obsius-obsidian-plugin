@@ -20,9 +20,14 @@ function flatten(obj: Record<string, any>) {
 const strings = flatten({
 	serviceName: 'Obsius',
 	actions: {
-		publish: {
+		create: {
 			name: 'Publish to Obsius',
 			failure: 'Failed to publish file to Obsius'
+		},
+		update: {
+			name: 'Update in Obsius',
+			success: 'Updated file in Obsius',
+			failure: 'Failed to update file in Obsius'
 		},
 		showUrl: {
 			name: 'Show published URL',

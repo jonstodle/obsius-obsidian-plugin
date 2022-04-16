@@ -2,7 +2,6 @@ import { Notice, Plugin, TFile } from 'obsidian';
 import type { ObsiusClient } from './src/obsius';
 import { createClient } from './src/obsius';
 import { getText } from './src/text';
-import { ShowUrlModal } from './src/modals';
 
 export default class ObsiusPlugin extends Plugin {
 	obsiusClient: ObsiusClient;
@@ -28,7 +27,8 @@ export default class ObsiusPlugin extends Plugin {
 								.onClick(async () => {
 									try {
 										const url = await this.obsiusClient.createPost(file);
-										new ShowUrlModal(this.app, url).open();
+										await navigator.clipboard.writeText(url);
+										new Notice(getText('actions.create.success'));
 									} catch (e) {
 										console.error(e);
 										new Notice(getText('actions.create.failure'));
@@ -49,14 +49,15 @@ export default class ObsiusPlugin extends Plugin {
 									}
 								}))
 							.addItem(item => item
-								.setTitle(getText('actions.showUrl.name'))
+								.setTitle(getText('actions.copyUrl.name'))
 								.setIcon('link')
-								.onClick(() => {
+								.onClick(async () => {
 									const url = this.obsiusClient.getUrl(file);
 									if (url) {
-										new ShowUrlModal(this.app, url).open();
+										await navigator.clipboard.writeText(url);
+										new Notice(getText('actions.copyUrl.success'))
 									} else {
-										new Notice(getText('actions.showUrl.failure'));
+										new Notice(getText('actions.copyUrl.failure'));
 									}
 								}))
 							.addItem(item => item

@@ -22,6 +22,7 @@ const strings = flatten({
 	actions: {
 		create: {
 			name: 'Publish to Obsius',
+			success: 'File published to Obsius. URL copied to clipboard.',
 			failure: 'Failed to publish file to Obsius'
 		},
 		update: {
@@ -29,8 +30,9 @@ const strings = flatten({
 			success: 'Updated file in Obsius',
 			failure: 'Failed to update file in Obsius'
 		},
-		showUrl: {
-			name: 'Show published URL',
+		copyUrl: {
+			name: 'Copy Obsius URL',
+			success: 'Obsius URL copied to clipboard',
 			failure: 'File not yet published'
 		},
 		remove: {

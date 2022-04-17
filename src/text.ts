@@ -22,28 +22,28 @@ const strings = flatten({
 	actions: {
 		create: {
 			name: 'Publish to Obsius',
-			success: 'File published to Obsius. URL copied to clipboard.',
-			failure: 'Failed to publish file to Obsius'
+			success: 'Note published to Obsius. URL copied to clipboard.',
+			failure: 'Failed to publish note to Obsius'
 		},
 		update: {
 			name: 'Update in Obsius',
-			success: 'Updated file in Obsius',
-			failure: 'Failed to update file in Obsius'
+			success: 'Updated note in Obsius',
+			failure: 'Failed to update note in Obsius'
 		},
 		copyUrl: {
 			name: 'Copy Obsius URL',
 			success: 'Obsius URL copied to clipboard',
-			failure: 'File not yet published'
+			failure: 'Note not yet published'
 		},
 		remove: {
 			name: 'Remove from Obsius',
-			success: 'File removed from Obsius',
-			failure: 'Failed to remove file form Obsius'
+			success: 'Note removed from Obsius',
+			failure: 'Failed to remove note form Obsius'
 		},
 	},
 	modals: {
 		showUrl: {
-			title: 'File published at:',
+			title: 'Note published at:',
 			copy: 'Copy URL',
 		}
 	}

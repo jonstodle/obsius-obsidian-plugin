@@ -49,3 +49,9 @@ Or use the editor menu.
 ![Open the editor menu and click "Remove from Obsius"](media/editor-menu-remove.gif)
 
 **NOTE:** It may take a little while before the note becomes unavailable due to caching.
+
+# Example
+
+An example page can be viewed here: [https://obsius.site/0m593p6z1h233y18714m](https://obsius.site/0m593p6z1h233y18714m)
+
+![Example page preview](media/example-page.png)

@@ -4,6 +4,10 @@
 
 This plugin integrates with [obsius.site](https://obsius.site) to publish markdown notes on the web.
 
+# Limitations
+
+The type of content possible to render is subject to some limitations. For the moment, only plain text and simple styling is supported.
+
 # Instructions
 
 ## Publishing a new note

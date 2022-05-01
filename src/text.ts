@@ -27,7 +27,7 @@ const strings = flatten({
 		},
 		update: {
 			name: 'Update in Obsius',
-			success: 'Updated note in Obsius',
+			success: 'Updated note in Obsius. It may take a little while before update becomes visible.',
 			failure: 'Failed to update note in Obsius'
 		},
 		copyUrl: {

@@ -108,7 +108,7 @@ export async function createClient(
 				throw new Error('Failed to update post');
 			}
 		},
-		async deletePost(file:TFile) {
+		async deletePost(file: TFile) {
 			const post = data.posts[file.path];
 
 			try {

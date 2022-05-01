@@ -55,7 +55,7 @@ export default class ObsiusPlugin extends Plugin {
 									const url = this.obsiusClient.getUrl(file);
 									if (url) {
 										await navigator.clipboard.writeText(url);
-										new Notice(getText('actions.copyUrl.success'))
+										new Notice(getText('actions.copyUrl.success'));
 									} else {
 										new Notice(getText('actions.copyUrl.failure'));
 									}

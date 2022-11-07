@@ -40,6 +40,12 @@ const strings = flatten({
 			success: 'Note removed from Obsius',
 			failure: 'Failed to remove note form Obsius'
 		},
+		listPosts: {
+			name: 'View published posts',
+			title: 'Published posts',
+			showFile: 'View file',
+			showPost: 'View post',
+		}
 	},
 	modals: {
 		showUrl: {

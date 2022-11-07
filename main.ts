@@ -2,6 +2,7 @@ import { Notice, Plugin, TFile } from 'obsidian';
 import type { ObsiusClient } from './src/obsius';
 import { createClient } from './src/obsius';
 import { getText } from './src/text';
+import { PublishedPostsModal } from './src/modals';
 
 export default class ObsiusPlugin extends Plugin {
 	obsiusClient: ObsiusClient;
@@ -23,6 +24,11 @@ export default class ObsiusPlugin extends Plugin {
 	}
 
 	addObsiusCommands(){
+		this.addCommand({
+			id: 'obsius.action.listPosts',
+			name: getText('actions.listPosts.name'),
+			callback: () => this.showPublishedPosts(),
+		})
 		this.addCommand({
 			id: 'obsius.action.create',
 			name: getText('actions.create.name'),
@@ -99,6 +105,10 @@ export default class ObsiusPlugin extends Plugin {
 				}
 			})
 		);
+	}
+
+	showPublishedPosts(){
+		new PublishedPostsModal(this.app, this.obsiusClient).open();
 	}
 
 	async publishFile(file: TFile){

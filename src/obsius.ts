@@ -39,6 +39,8 @@ export interface Data {
 }
 
 export interface ObsiusClient {
+	data(): Data;
+
 	publishPost(file: TFile): Promise<string | null>;
 
 	createPost(view: TFile): Promise<string>;
@@ -57,6 +59,9 @@ export async function createClient(
 	const data = await loadData();
 
 	return {
+		data() {
+			return data;
+		},
 		async publishPost(file: TFile) {
 			if (data.posts[file.path]) {
 				await this.updatePost(file);

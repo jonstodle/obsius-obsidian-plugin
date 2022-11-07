@@ -1,0 +1,18 @@
+.published-posts-modal.list-item-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: .75em 0 calc(.75em + 1px);
+}
+
+.published-posts-modal.list-item-container:not(:last-child) {
+	border-bottom: rgba(128, 128, 128, .5) solid 1px;
+}
+
+.published-posts-modal.list-item-container button {
+	margin-left: .5em;
+}
+
+.hidden {
+	display: none;
+}

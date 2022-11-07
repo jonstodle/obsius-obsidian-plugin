@@ -1,23 +1,48 @@
-import { App, Modal, Setting } from 'obsidian';
+import { App, Modal, setIcon, TFile } from 'obsidian';
 import { getText } from './text';
+import { ObsiusClient } from './obsius';
 
-export class ShowUrlModal extends Modal {
-	constructor(app: App, private url: string) {
+export class PublishedPostsModal extends Modal {
+	constructor(app: App, private obsiusClient: ObsiusClient) {
 		super(app);
 	}
 
 	onOpen() {
-		this.contentEl.createEl('h1', {text: getText('modals.showUrl.title')});
-		this.contentEl.createEl('code', {text: this.url});
+		this.contentEl.createEl('h1', {text: getText('actions.listPosts.title')});
 
-		new Setting(this.contentEl)
-			.addButton(button => button
-				.setButtonText(getText('modals.showUrl.copy'))
-				.onClick(async () => {
-					await navigator.clipboard.writeText(this.url);
-					this.close();
-				})
-			);
+		for (const [path] of Object.entries(this.obsiusClient.data().posts)) {
+			const file = app.vault.getAbstractFileByPath(path);
+			if (!(file instanceof TFile)) {
+				continue;
+			}
+
+			const container = this.contentEl.createEl('div', {
+				cls: ['published-posts-modal', 'list-item-container'],
+			});
+			container.createEl('span', {text: path});
+
+			const buttonContainer = container.createEl('div');
+
+			const showFile = buttonContainer.createEl('button', {
+				title: getText('actions.listPosts.showFile'),
+			});
+			showFile.addEventListener('click', () =>
+				app.workspace.openLinkText(path, path)
+					.then(() => this.close()));
+			setIcon(showFile, 'file-text');
+
+			const webLink = buttonContainer.createEl('a',{
+				cls: 'hidden',
+				href: this.obsiusClient.getUrl(file),
+			});
+
+			const showPost = buttonContainer.createEl('button');
+			showPost.addEventListener('click', () => {
+				webLink.click();
+				this.close();
+			});
+			setIcon(showPost, 'globe');
+		}
 	}
 
 	onClose() {

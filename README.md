@@ -70,8 +70,14 @@ Or the command palette.
 
 **NOTE:** It may take a little while before the note becomes unavailable due to caching.
 
+## View published notes
+
+Use the command "View published posts" from the command palette to view a list of published notes.
+
+![Search for "View published posts" in the command palette](media/command-list-posts.jpg)
+
 # Example
 
 An example page can be viewed here: [https://obsius.site/0m593p6z1h233y18714m](https://obsius.site/0m593p6z1h233y18714m)
 
-![Example page preview](media/example-page.jpg)
+![Example page preview](media/example-page.png)

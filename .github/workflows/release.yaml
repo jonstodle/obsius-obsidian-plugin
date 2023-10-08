@@ -23,7 +23,7 @@ jobs:
               id: build
               run: |
                   npm i -g pnpm
-                  pnpm install
+                  pnpm install --no-frozen-lockfile
                   pnpm run build
                   mkdir ${{ env.PLUGIN_NAME }}
                   cp main.js manifest.json styles.css ${{ env.PLUGIN_NAME }}

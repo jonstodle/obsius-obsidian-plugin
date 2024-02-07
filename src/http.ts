@@ -24,7 +24,5 @@ export default async function (
 		);
 	}
 
-	return parseInt(resp.headers.get("Content-Length") ?? "0") != 0
-		? await resp.json()
-		: null;
+	return (await resp.json()) || null;
 }

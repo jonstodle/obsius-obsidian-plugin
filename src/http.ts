@@ -24,7 +24,7 @@ export default async function (
 		);
 	}
 
-	return parseInt(resp.headers.get("Content-Length") ?? "0") != 0
+	return resp.headers.get("Content-Type") == "application/json"
 		? await resp.json()
 		: null;
 }

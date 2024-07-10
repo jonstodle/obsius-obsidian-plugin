@@ -1,8 +1,8 @@
-import { Notice, Plugin, TFile } from 'obsidian';
-import type { ObsiusClient } from './src/obsius';
-import { createClient } from './src/obsius';
-import { getText } from './src/text';
-import { PublishedPostsModal } from './src/modals';
+import { Notice, Plugin, TFile } from "obsidian";
+import type { ObsiusClient } from "./src/obsius";
+import { createClient } from "./src/obsius";
+import { getText } from "./src/text";
+import { PublishedPostsModal } from "./src/modals";
 
 export default class ObsiusPlugin extends Plugin {
 	obsiusClient: ObsiusClient;
@@ -16,89 +16,102 @@ export default class ObsiusPlugin extends Plugin {
 			async (data) => await this.saveData(data)
 		);
 
-		this.addObsiusCommands()
-		this.registerFileMenuEvent()
+		this.addObsiusCommands();
+		this.registerFileMenuEvent();
 	}
 
-	onunload() {
-	}
+	onunload() {}
 
-	addObsiusCommands(){
+	addObsiusCommands() {
 		this.addCommand({
-			id: 'obsius.action.listPosts',
-			name: getText('actions.listPosts.name'),
+			id: "obsius.action.listPosts",
+			name: getText("actions.listPosts.name"),
 			callback: () => this.showPublishedPosts(),
-		})
+		});
 		this.addCommand({
-			id: 'obsius.action.create',
-			name: getText('actions.create.name'),
+			id: "obsius.action.create",
+			name: getText("actions.create.name"),
 			editorCheckCallback: (checking, _, view) => {
-				if (checking){
-					return !this.obsiusClient.getUrl(view.file)
+				if (!(view.file instanceof TFile)) {
+					return false;
 				}
-				this.publishFile(view.file)
-			}
-		})
+				if (checking) {
+					return !this.obsiusClient.getUrl(view.file);
+				}
+				this.publishFile(view.file);
+			},
+		});
 		this.addCommand({
-			id: 'obsius.action.update',
-			name: getText('actions.update.name'),
+			id: "obsius.action.update",
+			name: getText("actions.update.name"),
 			editorCheckCallback: (checking, _, view) => {
-				if (checking){
-					return !!this.obsiusClient.getUrl(view.file)
+				if (!(view.file instanceof TFile)) {
+					return false;
 				}
-				this.updateFile(view.file)
-			}
-		})
+				if (checking) {
+					return !!this.obsiusClient.getUrl(view.file);
+				}
+				this.updateFile(view.file);
+			},
+		});
 		this.addCommand({
-			id: 'obsius.action.copyUrl',
-			name: getText('actions.copyUrl.name'),
+			id: "obsius.action.copyUrl",
+			name: getText("actions.copyUrl.name"),
 			editorCheckCallback: (checking, _, view) => {
-				if (checking){
-					return !!this.obsiusClient.getUrl(view.file)
+				if (!(view.file instanceof TFile)) {
+					return false;
 				}
-				this.copyUrl(view.file)
-			}
-		})
+				if (checking) {
+					return !!this.obsiusClient.getUrl(view.file);
+				}
+				this.copyUrl(view.file);
+			},
+		});
 		this.addCommand({
-			id: 'obsius.action.remove',
-			name: getText('actions.remove.name'),
+			id: "obsius.action.remove",
+			name: getText("actions.remove.name"),
 			editorCheckCallback: (checking, _, view) => {
-				if (checking){
-					return !!this.obsiusClient.getUrl(view.file)
+				if (!(view.file instanceof TFile)) {
+					return false;
 				}
-				this.deleteFile(view.file)
-			}
-		})
+				if (checking) {
+					return !!this.obsiusClient.getUrl(view.file);
+				}
+				this.deleteFile(view.file);
+			},
+		});
 	}
 
-	registerFileMenuEvent(){
+	registerFileMenuEvent() {
 		this.registerEvent(
-			this.app.workspace.on('file-menu', (menu, file) => {
+			this.app.workspace.on("file-menu", (menu, file) => {
 				if (file instanceof TFile) {
 					menu.addSeparator();
 					if (!this.obsiusClient.getUrl(file)) {
-						menu
-							.addItem(item => item
-								.setTitle(getText('actions.create.name'))
-								.setIcon('up-chevron-glyph')
+						menu.addItem((item) =>
+							item
+								.setTitle(getText("actions.create.name"))
+								.setIcon("up-chevron-glyph")
 								.onClick(() => this.publishFile(file))
-							);
+						);
 					} else {
-						menu
-							.addItem(item => item
-								.setTitle(getText('actions.update.name'))
-								.setIcon('double-up-arrow-glyph')
+						menu.addItem((item) =>
+							item
+								.setTitle(getText("actions.update.name"))
+								.setIcon("double-up-arrow-glyph")
 								.onClick(() => this.updateFile(file))
+						)
+							.addItem((item) =>
+								item
+									.setTitle(getText("actions.copyUrl.name"))
+									.setIcon("link")
+									.onClick(() => this.copyUrl(file))
 							)
-							.addItem(item => item
-								.setTitle(getText('actions.copyUrl.name'))
-								.setIcon('link')
-								.onClick(() => this.copyUrl(file))
-							)
-							.addItem(item => item
-								.setTitle(getText('actions.remove.name'))
-								.setIcon('cross')
-								.onClick(() => this.deleteFile(file))
+							.addItem((item) =>
+								item
+									.setTitle(getText("actions.remove.name"))
+									.setIcon("cross")
+									.onClick(() => this.deleteFile(file))
 							);
 					}
 					menu.addSeparator();
@@ -107,48 +120,48 @@ export default class ObsiusPlugin extends Plugin {
 		);
 	}
 
-	showPublishedPosts(){
+	showPublishedPosts() {
 		new PublishedPostsModal(this.app, this.obsiusClient).open();
 	}
 
-	async publishFile(file: TFile){
+	async publishFile(file: TFile) {
 		try {
 			const url = await this.obsiusClient.createPost(file);
 			await navigator.clipboard.writeText(url);
-			new Notice(getText('actions.create.success'));
+			new Notice(getText("actions.create.success"));
 		} catch (e) {
 			console.error(e);
-			new Notice(getText('actions.create.failure'));
+			new Notice(getText("actions.create.failure"));
 		}
 	}
 
-	async updateFile(file: TFile){
+	async updateFile(file: TFile) {
 		try {
 			await this.obsiusClient.updatePost(file);
-			new Notice(getText('actions.update.success'));
+			new Notice(getText("actions.update.success"));
 		} catch (e) {
 			console.error(e);
-			new Notice(getText('actions.update.failure'));
+			new Notice(getText("actions.update.failure"));
 		}
 	}
 
-	async copyUrl(file: TFile){
+	async copyUrl(file: TFile) {
 		const url = this.obsiusClient.getUrl(file);
 		if (url) {
 			await navigator.clipboard.writeText(url);
-			new Notice(getText('actions.copyUrl.success'));
+			new Notice(getText("actions.copyUrl.success"));
 		} else {
-			new Notice(getText('actions.copyUrl.failure'));
+			new Notice(getText("actions.copyUrl.failure"));
 		}
 	}
 
-	async deleteFile(file: TFile){
+	async deleteFile(file: TFile) {
 		try {
 			await this.obsiusClient.deletePost(file);
-			new Notice(getText('actions.remove.success'));
+			new Notice(getText("actions.remove.success"));
 		} catch (e) {
 			console.error(e);
-			new Notice(getText('actions.remove.failure'));
+			new Notice(getText("actions.remove.failure"));
 		}
 	}
 }

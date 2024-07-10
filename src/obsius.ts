@@ -1,7 +1,7 @@
-import http from './http';
-import { TFile } from 'obsidian';
+import http from "./http";
+import { TFile } from "obsidian";
 
-const baseUrl = 'https://obsius.site';
+const baseUrl = "https://obsius.site";
 
 interface CreateResponse {
 	id: string;
@@ -10,7 +10,7 @@ interface CreateResponse {
 
 const obsiusWrapper = {
 	async createPost(title: string, content: string): Promise<CreateResponse> {
-		return http('POST', `${baseUrl}/`, {title, content});
+		return http("POST", `${baseUrl}/`, { title, content });
 	},
 	async updatePost(
 		id: string,
@@ -18,14 +18,14 @@ const obsiusWrapper = {
 		title: string,
 		content: string
 	): Promise<void> {
-		return http('PUT', `${baseUrl}/${id}`, {
+		return http("PUT", `${baseUrl}/${id}`, {
 			secret,
 			title,
 			content,
 		});
 	},
 	async deletePost(id: string, secret: string): Promise<void> {
-		return http('DELETE', `${baseUrl}/${id}`, {secret});
+		return http("DELETE", `${baseUrl}/${id}`, { secret });
 	},
 };
 
@@ -45,7 +45,7 @@ export interface ObsiusClient {
 
 	createPost(view: TFile): Promise<string>;
 
-	getUrl(view: TFile): string;
+	getUrl(view: TFile): string | null;
 
 	updatePost(view: TFile): Promise<void>;
 
@@ -85,10 +85,10 @@ export async function createClient(
 				return `${baseUrl}/${resp.id}`;
 			} catch (e) {
 				console.error(e);
-				throw new Error('Failed to create post');
+				throw new Error("Failed to create post");
 			}
 		},
-		getUrl(file: TFile): string {
+		getUrl(file: TFile): string | null {
 			const post = data.posts[file.path];
 			if (!post) {
 				return null;
@@ -110,7 +110,7 @@ export async function createClient(
 				);
 			} catch (e) {
 				console.error(e);
-				throw new Error('Failed to update post');
+				throw new Error("Failed to update post");
 			}
 		},
 		async deletePost(file: TFile) {
@@ -122,7 +122,7 @@ export async function createClient(
 				await saveData(data);
 			} catch (e) {
 				console.error(e);
-				throw new Error('Failed to delete post');
+				throw new Error("Failed to delete post");
 			}
 		},
 	};

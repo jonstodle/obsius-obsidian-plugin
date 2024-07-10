@@ -13,7 +13,7 @@ export class PublishedPostsModal extends Modal {
 		});
 
 		for (const [path] of Object.entries(this.obsiusClient.data().posts)) {
-			const file = app.vault.getAbstractFileByPath(path);
+			const file = this.app.vault.getAbstractFileByPath(path);
 			if (!(file instanceof TFile)) {
 				continue;
 			}
@@ -29,7 +29,9 @@ export class PublishedPostsModal extends Modal {
 				title: getText("actions.listPosts.showFile"),
 			});
 			showFile.addEventListener("click", () =>
-				app.workspace.openLinkText(path, path).then(() => this.close())
+				this.app.workspace
+					.openLinkText(path, path)
+					.then(() => this.close())
 			);
 			setIcon(showFile, "file-text");
 

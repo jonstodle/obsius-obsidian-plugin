@@ -50,6 +50,10 @@ export interface ObsiusClient {
 	updatePost(view: TFile): Promise<void>;
 
 	deletePost(view: TFile): Promise<void>;
+
+	handleNoteRename(file: TFile, oldPath: string): Promise<void>;
+
+	handleNoteDelete(file: TFile): Promise<void>;
 }
 
 export async function createClient(
@@ -123,6 +127,19 @@ export async function createClient(
 			} catch (e) {
 				console.error(e);
 				throw new Error("Failed to delete post");
+			}
+		},
+		async handleNoteRename(file, oldPath) {
+			if (data.posts[oldPath]) {
+				data.posts[file.path] = data.posts[oldPath];
+				delete data.posts[oldPath];
+				await saveData(data);
+			}
+		},
+		async handleNoteDelete(file) {
+			if (data.posts[file.path]) {
+				delete data.posts[file.path];
+				await saveData(data);
 			}
 		},
 	};

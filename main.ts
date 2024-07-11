@@ -18,6 +18,7 @@ export default class ObsiusPlugin extends Plugin {
 
 		this.addObsiusCommands();
 		this.registerFileMenuEvent();
+		this.registerVaultEvents();
 	}
 
 	onunload() {}
@@ -115,6 +116,23 @@ export default class ObsiusPlugin extends Plugin {
 							);
 					}
 					menu.addSeparator();
+				}
+			})
+		);
+	}
+
+	registerVaultEvents() {
+		this.registerEvent(
+			this.app.vault.on("rename", (file, oldPath) => {
+				if (file instanceof TFile) {
+					this.obsiusClient.handleNoteRename(file, oldPath);
+				}
+			})
+		);
+		this.registerEvent(
+			this.app.vault.on("delete", (file) => {
+				if (file instanceof TFile) {
+					this.obsiusClient.handleNoteDelete(file);
 				}
 			})
 		);
